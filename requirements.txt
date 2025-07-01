@@ -1,0 +1,10 @@
+fastmcp
+aiohttp
+aiomysql
+pytest
+redis>=4.2.0
+uvicorn
+fastapi
+tenacity
+python-dotenv
+pytest-asyncio 
