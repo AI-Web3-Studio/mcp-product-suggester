@@ -1,9 +1,18 @@
 [English](README.md) | [简体中文](README.zh.md)
 
-# MCP Product Suggester
+# MCP Product Suggester — 通用产品推荐 MCP Server
 
-基于 [fastmcp](https://github.com/jlowin/fastmcp) 的极简通用商品推荐服务  
-**支持任意表结构，开箱即用，极致开源友好。**
+一个基于 [fastmcp](https://github.com/jlowin/fastmcp) 的极简、通用型**MCP Server**，用于产品推荐。
+**开箱即用，开源友好，支持任意表结构，完全兼容 MCP（模型上下文协议）生态。**
+
+---
+
+> **本项目是现代化、异步的 MCP Server，通过 fastmcp 协议注册产品推荐工具。**
+>
+> - **标准 MCP 工具注册：** 所有推荐逻辑均以 MCP 工具形式暴露，任意 MCP 客户端均可调用。
+> - **LLM 智能驱动：** 集成 OpenAI、Monica 等大模型，实现智能推荐。
+> - **通用协议：** 完全兼容 MCP/fastmcp 客户端，支持 JSON-RPC、HTTP、SSE 等多种协议。
+> - **适用场景：** 电商、内容平台、AI 机器人、SaaS 等所有需要标准化模型工具服务的场景。
 
 ---
 

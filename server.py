@@ -9,6 +9,9 @@ Minimalist, adapted to fastmcp/uv ecosystem, directly exposes app = FastMCP(...)
 from fastmcp import FastMCP
 from database import ProductDatabase
 from gpt_service import GPTRecommendationService
+from common.log import logger
+
+import json
 
 app = FastMCP("product-recommendation-server")
 
@@ -41,11 +44,16 @@ async def gpt_recommend(query: str, limit: int = 3) -> str:
     Returns:
         格式化推荐结果 / Formatted recommendation result
     """
-    db = ProductDatabase()
-    products = await db.load_products(limit=1000)
-    gpt_service = GPTRecommendationService()
-    recommended = await gpt_service.get_recommendations(query, products, limit)
-    return str(recommended)
+    logger.info(f"gpt_recommend request params: query={query}, limit={limit}")
+    try:
+        db = ProductDatabase()
+        products = await db.load_products(limit=1000)
+        gpt_service = GPTRecommendationService()
+        recommended = await gpt_service.get_recommendations(query, products, limit)
+        return json.dumps(recommended)
+    except Exception as e:
+        logger.error(f"gpt_recommend exception: {e}")
+        return str([])
 
 if __name__ == "__main__":
     # 启动并运行服务 / Initialize and run the server

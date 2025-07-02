@@ -1,9 +1,18 @@
 [English](README.md) | [简体中文](README.zh.md)
 
-# MCP Product Suggester
+# MCP Product Suggester — Universal Product Recommendation MCP Server
 
-A minimal, universal product recommendation service based on [fastmcp](https://github.com/jlowin/fastmcp).
-**Supports any table structure, out-of-the-box, open source friendly.**
+A minimal, universal **MCP Server** for product recommendation, based on [fastmcp](https://github.com/jlowin/fastmcp).
+**Out-of-the-box, open source, supports any table structure, and fully compatible with the MCP (Model Context Protocol) ecosystem.**
+
+---
+
+> **This project is a modern, async MCP Server that registers product recommendation tools via the fastmcp protocol.**
+>
+> - **Standard MCP tool registration:** All recommendation logic is exposed as MCP tools, easily callable by any MCP-compatible client.
+> - **LLM-powered:** Integrates OpenAI, Monica, etc. for intelligent recommendations.
+> - **Universal protocol:** Fully compatible with MCP/fastmcp clients, supports JSON-RPC, HTTP, SSE, and more.
+> - **Ideal for:** E-commerce, content platforms, AI bots, SaaS, and any scenario needing standardized model tool serving.
 
 ---
 
