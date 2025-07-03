@@ -12,6 +12,9 @@ import asyncio
 from common.log import logger
 from fastmcp import Client
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 async def main():
     try:
