@@ -7,18 +7,19 @@ Minimalist, adapted to fastmcp/uv ecosystem, directly exposes app = FastMCP(...)
 """
 
 from fastmcp import FastMCP
+from fastapi import FastAPI
+from starlette.routing import Mount
+import os
+import json
 from database import ProductDatabase
 from gpt_service import GPTRecommendationService
 from common.log import logger
-import os
 
-import json
-
-app = FastMCP("product-recommendation-server")
+# 创建 FastMCP 服务器
+mcp = FastMCP("product-recommendation-server")
 
 # 健康检查工具 / Health check tool
-
-
+@mcp.tool()
 def health() -> str:
     """
     健康检查接口
@@ -28,13 +29,8 @@ def health() -> str:
     """
     return "ok"
 
-
-app.tool()(health)
-
 # 纯GPT推荐工具 / Pure GPT recommendation tool
-
-
-@app.tool()
+@mcp.tool()
 async def gpt_recommend(query: str, limit: int = 3) -> str:
     """
     基于GPT的商品推荐工具
@@ -55,6 +51,18 @@ async def gpt_recommend(query: str, limit: int = 3) -> str:
     except Exception as e:
         logger.error(f"gpt_recommend exception: {e}")
         return str([])
+
+# 创建 ASGI app
+mcp_app = mcp.http_app(path='/mcp')
+
+# 创建 FastAPI app 并挂载 MCP 服务
+app = FastAPI(lifespan=mcp_app.lifespan)
+app.mount("/mcp-server", mcp_app)
+
+# 可选：FastAPI 根路由健康检查
+@app.get("/")
+def root():
+    return {"status": "ok", "msg": "MCP FastAPI server is running."}
 
 if __name__ == "__main__":
     # 启动并运行服务 / Initialize and run the server
