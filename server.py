@@ -10,6 +10,7 @@ from fastmcp import FastMCP
 from database import ProductDatabase
 from gpt_service import GPTRecommendationService
 from common.log import logger
+import os
 
 import json
 
@@ -57,4 +58,5 @@ async def gpt_recommend(query: str, limit: int = 3) -> str:
 
 if __name__ == "__main__":
     # 启动并运行服务 / Initialize and run the server
-    app.run(transport="http", host="127.0.0.1", port=8000, path="/mcp")
+    port = int(os.getenv("SERVER_PORT", 8000))
+    app.run(transport="http", host="127.0.0.1", port=port, path="/mcp")

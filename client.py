@@ -13,6 +13,7 @@ import aiohttp
 from typing import Dict, Any, Optional
 from common.log import logger
 from fastmcp import Client
+import os
 
 
 class MCPClient:
@@ -153,7 +154,8 @@ async def test_mcp_server(server_url: str) -> bool:
 
 
 async def main():
-    async with Client("http://localhost:8000/mcp") as client:
+    server_url = os.getenv("SERVER_URL", "http://localhost:8000")
+    async with Client(f"{server_url}/mcp") as client:
         # 英文自然语言描述用户需求 / English natural language product query
         query = "I want a discreet, travel-friendly vibrator suitable for beginners, preferably waterproof and USB rechargeable."
         result = await client.call_tool("gpt_recommend", {"query": query, "limit": 1})

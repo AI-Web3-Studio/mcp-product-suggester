@@ -209,21 +209,58 @@ PRODUCT_TABLE=your_table_name
 PRODUCT_SQL_TEMPLATE=SELECT * FROM {table} WHERE deleted_at IS NULL AND available = 1 ORDER BY created_at DESC LIMIT {limit}
 ```
 
+### 8. 服务端口与客户端地址
+
+如需自定义服务端口和客户端连接地址，在 `.env` 文件中添加如下配置：
+
+```env
+SERVER_PORT=8000                # MCP 服务端监听端口（默认8000）
+SERVER_URL=http://localhost:8000  # 客户端连接 MCP 服务的地址（默认 http://localhost:8000）
+```
+
+- `SERVER_PORT` 由服务端（server.py）读取，决定监听哪个端口。
+- `SERVER_URL` 由客户端（client.py、测试用例）读取，决定连接哪个服务。
+
 ---
 
 ## 快速开始
 
+### 1. 安装 uv（推荐）
+
+[uv](https://github.com/astral-sh/uv) 是一个超快的 Python 包/依赖管理和虚拟环境工具，强烈推荐本项目使用。
+
 ```bash
+# 安装 uv（如未安装）
+pip install uv
+
+# 创建虚拟环境（推荐）
 uv venv
+
+# 激活虚拟环境
+# Windows:
+.\.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
+
+# 安装依赖
 uv pip install -r requirements.txt
+```
 
-# 启动服务（推荐）
+### 2. 启动 MCP 服务端
+
+```bash
 uv run --with app server.py
+```
 
-# 运行客户端测试（推荐）
+### 3. 运行客户端测试
+
+```bash
 uv run client.py
+```
 
-# 运行测试
+### 4. 运行测试
+
+```bash
 uv pip install pytest  # 如未安装
 pytest tests/
 ```

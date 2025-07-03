@@ -210,21 +210,58 @@ PRODUCT_TABLE=your_table_name
 PRODUCT_SQL_TEMPLATE=SELECT * FROM {table} WHERE deleted_at IS NULL AND available = 1 ORDER BY created_at DESC LIMIT {limit}
 ```
 
+### 8. Server Port & Client URL
+
+To customize the server port and client connection address, add the following to your `.env` file:
+
+```env
+SERVER_PORT=8000         # The port your MCP server listens on (default: 8000)
+SERVER_URL=http://localhost:8000  # The URL your client uses to connect to the MCP server (default: http://localhost:8000)
+```
+
+- `SERVER_PORT` is used by the server (`server.py`) to determine which port to listen on.
+- `SERVER_URL` is used by the client (`client.py`, tests) to determine which server to connect to.
+
 ---
 
 ## Quick Start
 
+### 1. Install uv (Recommended)
+
+[uv](https://github.com/astral-sh/uv) is a super-fast Python package/dependency manager and virtual environment tool. It is recommended for this project.
+
 ```bash
+# Install uv (if not already installed)
+pip install uv
+
+# Create a virtual environment (recommended)
 uv venv
+
+# Activate the virtual environment
+# On Windows:
+.\.venv\Scripts\activate
+# On macOS/Linux:
+source .venv/bin/activate
+
+# Install dependencies
 uv pip install -r requirements.txt
+```
 
-# Start the service (recommended)
+### 2. Start the MCP Server
+
+```bash
 uv run --with app server.py
+```
 
-# Run client test (recommended)
+### 3. Run the client test
+
+```bash
 uv run client.py
+```
 
-# Run tests
+### 4. Run tests
+
+```bash
 uv pip install pytest  # if not installed
 pytest tests/
 ```
