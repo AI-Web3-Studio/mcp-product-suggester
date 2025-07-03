@@ -128,41 +128,26 @@ class GPTRecommendationService:
             products_text = self._build_products_text(products)
             system_prompt = self._build_system_prompt()
             user_prompt = self._build_user_prompt(query, products_text, limit)
-            if self.llm_provider == "openai":
-                headers = {
-                    "Content-Type": "application/json",
-                    "Authorization": f"Bearer {self.api_key}"
-                }
-                payload = {
-                    "model": "gpt-4o",
-                    "messages": [
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_prompt}
-                    ],
-                    "max_tokens": 100,
-                    "temperature": 0.3
-                }
-            else:
-                headers = {
-                    "Content-Type": "application/json",
-                    "Authorization": f"Bearer {self.api_key}"
-                }
-                payload = {
-                    "model": "gpt-4o",
-                    "messages": [
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_prompt}
-                    ],
-                    "max_tokens": 100,
-                    "temperature": 0.3
-                }
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.api_key}"
+            }
+            payload = {
+                "model": "gpt-4o",
+                "messages": [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                "max_tokens": 100,
+                "temperature": 0.3
+            }
+            timeout = aiohttp.ClientTimeout(total=30)
+
             async with GPT_API_SEMAPHORE:
                 async for attempt in AsyncRetrying(stop=stop_after_attempt(3), wait=wait_fixed(2), reraise=True):
                     with attempt:
-                        async with aiohttp.ClientSession() as session:
-                            proxy_args = {
-                                "proxy": PROXY_URL} if PROXY_URL else {}
-                            async with session.post(self.api_url, headers=headers, json=payload, **proxy_args) as resp:
+                        async with aiohttp.ClientSession(timeout=timeout) as session:
+                            async with session.post(self.api_url, headers=headers, json=payload, proxy=PROXY_URL, ssl=False) as resp:
                                 if resp.status == 200:
                                     result = await resp.json()
                                     gpt_response = result["choices"][0]["message"]["content"].strip(
