@@ -250,7 +250,7 @@ uv pip install -r requirements.txt
 ### 2. Start the MCP Server
 
 ```bash
-uv run --with app server.py
+uvicorn server:app
 ```
 
 ### 3. Run the client test

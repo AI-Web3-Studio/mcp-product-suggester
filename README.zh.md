@@ -249,7 +249,7 @@ uv pip install -r requirements.txt
 ### 2. 启动 MCP 服务端
 
 ```bash
-uv run --with app server.py
+uvicorn server:app
 ```
 
 ### 3. 运行客户端测试
